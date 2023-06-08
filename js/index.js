@@ -135,6 +135,39 @@ async function afficheList(nom, eleAffiche) {
     }) //fin du Foreach
 }
 
+// fonction de la barre de recherche 
+function handleSearch() {
+    // Récupérer l'entrée de la searchBar
+    const searchInput = document.getElementById('searchInput');
+    const query = searchInput.value.toLowerCase();
+  
+    // Tableau pour les recettes 
+    const matchedRecipes = [];
+  
+    // Boucle sur chaque recette
+    for (let i = 0; i < recipesFiltre.length; i++) {
+      const recipe = recipesFiltre[i];
+      const recipeName = recipe.name.toLowerCase();
+      const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
+      const recipeDescription = recipe.description.toLowerCase();
+      
+      // Check si le terme existe dans la recherche
+      if (recipeName.includes(query) || recipeIngredients.includes(query) || recipeDescription.includes(query)) {
+        matchedRecipes.push(recipe);
+	 const recipeEngine = recipesFactory(recipe);
+        const recipeDOM = recipeEngine.getRecipeDOM();
+        resultsSection.appendChild(recipeDOM);
+
+      } 
+    }
+  
+    // Display the matched recipes or perform further actions
+    displayRecipes(matchedRecipes)
+  }
+  
+  // Example usage: Attach the handleSearch function to the input field's "input" event
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', handleSearch);
 
 
 let tagSearch
